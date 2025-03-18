@@ -1,0 +1,98 @@
+name: Terraform Destroy
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    name: 'Terraform Destroy'
+    env: 
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    runs-on: ubuntu-latest
+  
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform
+    
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+        
+    # Install the latest version of Terraform CLI 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=${TF_VAR_TERRAFORM_AZURE_RG_NAME}" \
+          -backend-config="storage_account_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME}" \
+          -backend-config="container_name=${TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME}" \
+          -backend-config="key=terraform.tfstate"
+
+    - name: Terraform destroy
+      env:
+        TF_VAR_TERRAFORM_AZURE_RG_NAME: ${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        TF_VAR_TERRAFORM_AZURE_STORAGE_CONTAINER_NAME: ${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
+      run: terraform destroy -auto-approve -input=false 
+
+  destroy_backend_for_terraform:
+      name: 'Destroy Terraform Backend'
+      runs-on: ubuntu-latest
+      needs: terraform
+
+      steps:
+      # Checkout the repository to the GitHub Actions runner
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
+            
+      - name: Delete RG and Storage account
+        run: |
+          export TERRAFORM_AZURE_RG_NAME=${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+          export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+          export TERRAFORM_AZURE_STORAGE_CONTAINER_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
+
+          if [ "$(az storage account list -o tsv --query "[?name=='$TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME'].name")" = "" ];
+          then
+              echo "No StorageAccount was found."
+          else
+              echo "StorageAccount was found."
+              az storage account delete --resource-group $TERRAFORM_AZURE_RG_NAME --name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME --yes
+          fi
+                  
+          if [ "$(az group list -o tsv --query "[?name=='$TERRAFORM_AZURE_RG_NAME'].name")" = "" ];
+          then
+              echo "No RG was found."
+          else
+              echo "RG was found."
+              az group delete --name $TERRAFORM_AZURE_RG_NAME --yes
+          fi

@@ -1,0 +1,56 @@
+name: Terraform Init Backend
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy_backend_for_terraform:
+    name: 'AZ CLI Terraform Backend'
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Azure login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
+          
+    - name: Create RG and Storage account
+      run: |
+        export TERRAFORM_AZURE_RG_NAME=${{ secrets.TERRAFORM_AZURE_RG_NAME }}
+        export AZURE_DEFAULT_REGION=${{ secrets.AZURE_DEFAULT_REGION }}
+        
+        export TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME }}
+        export TERRAFORM_AZURE_STORAGE_CONTAINER_NAME=${{ secrets.TERRAFORM_AZURE_STORAGE_CONTAINER_NAME }}
+                
+        if [ "$(az group list -o tsv --query "[?name=='$TERRAFORM_AZURE_RG_NAME'].name")" = "" ];
+        then
+            echo "No RG was found."
+            az group create --name $TERRAFORM_AZURE_RG_NAME --location $AZURE_DEFAULT_REGION
+        else
+            echo "RG was found."
+        fi
+
+        if [ "$(az storage account list -o tsv --query "[?name=='$TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME'].name")" = "" ];
+        then
+            echo "No storageaccount was found."
+            az storage account create --resource-group $TERRAFORM_AZURE_RG_NAME --name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME --sku Standard_LRS
+            az storage container create --name $TERRAFORM_AZURE_STORAGE_CONTAINER_NAME --account-name $TERRAFORM_AZURE_STORAGE_ACCOUNT_NAME
+        else
+            echo "StorageAccount was found."
+        fi
