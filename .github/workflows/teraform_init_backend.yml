@@ -1,4 +1,4 @@
-name: Terraform Init Backend
+name: 01. Terraform Init Backend
 
 on: workflow_dispatch
 
