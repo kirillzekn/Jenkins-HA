@@ -81,9 +81,9 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
   resource_group_name = azurerm_resource_group.jenkins-ha.name
   location            = azurerm_resource_group.jenkins-ha.location
 
-  sku                 = "Standard_B2s"
-  instances           = 2
-  admin_username      = "adminuser"
+  sku            = "Standard_B2s"
+  instances      = 2
+  admin_username = "adminuser"
 
   admin_ssh_key {
     username   = "adminuser"
@@ -128,7 +128,7 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
     destination_port_range     = "22"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
-  }  
+  }
 }
 
 resource "azurerm_subnet_network_security_group_association" "jenkins-ha" {
