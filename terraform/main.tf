@@ -22,13 +22,8 @@ resource "azurerm_key_vault" "jenkins-ha" {
       "Get",
       "List",
       "Set",
-      "Delete"
-    ]
-    key_permissions = [
-      "Get",
-      "List",
-      "Create",
-      "Delete"
+      "Delete",
+      "Purge"
     ]
   }
 }
