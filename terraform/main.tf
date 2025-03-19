@@ -23,7 +23,8 @@ resource "azurerm_key_vault" "jenkins-ha" {
       "List",
       "Set",
       "Delete",
-      "Purge"
+      "Purge",
+      "Recover"
     ]
   }
 }
