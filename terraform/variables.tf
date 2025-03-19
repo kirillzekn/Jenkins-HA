@@ -20,5 +20,5 @@ variable "AZURE_DEFAULT_REGION" {
   type        = string
   description = "The Azure region to deploy the AKS cluster"
   default     = "West Europe"
-  
+
 }
