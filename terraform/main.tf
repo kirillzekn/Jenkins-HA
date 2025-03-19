@@ -118,7 +118,8 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
   name                = "jenkins-ha-nsg"
   location            = azurerm_resource_group.jenkins-ha.location
   resource_group_name = azurerm_resource_group.jenkins-ha.name
-  security_rule = {
+
+  security_rule {
     name                       = "SSH"
     priority                   = 1001
     direction                  = "Inbound"
