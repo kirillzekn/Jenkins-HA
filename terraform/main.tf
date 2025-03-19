@@ -52,7 +52,7 @@ module "vmscaleset" {
   virtual_network_name = "vnet-default-hub-westeurope"
   subnet_name          = "snet-management-default-hub-westeurope"
   vmscaleset_name      = "jenkins-ha-vmss"
-  virtual_machine_size = "Standard_DS2_v2"
+  virtual_machine_size = "Standard_B2ls_v2"
 
 
   # This module support multiple Pre-Defined Linux and Windows Distributions.
