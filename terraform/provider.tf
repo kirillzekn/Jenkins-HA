@@ -5,9 +5,6 @@ provider "azurerm" {
   features {}
 }
 
-provider "kubernetes" {
-}
-
 terraform {
   required_providers {
     azurerm = {
