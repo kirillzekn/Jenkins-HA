@@ -27,7 +27,7 @@ resource "azurerm_lb_nat_rule" "jenkins-ha" {
   protocol                       = "Tcp"
   frontend_port                  = 22
   backend_port                   = 22
-  frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
+  #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
   resource_group_name            = azurerm_resource_group.jenkins-ha.name
@@ -38,7 +38,7 @@ resource "azurerm_lb_nat_rule" "jenkins-ha-8080" {
   protocol                       = "Tcp"
   frontend_port                  = 8080
   backend_port                   = 8080
-  frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
+  #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
   resource_group_name            = azurerm_resource_group.jenkins-ha.name
@@ -49,7 +49,7 @@ resource "azurerm_lb_nat_rule" "jenkins-ha-50000" {
   protocol                       = "Tcp"
   frontend_port                  = 50000
   backend_port                   = 50000
-  frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
+  #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
   resource_group_name            = azurerm_resource_group.jenkins-ha.name
