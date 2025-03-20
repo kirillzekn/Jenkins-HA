@@ -14,7 +14,7 @@ resource "azurerm_subnet" "internal" {
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
-  name                = "jenkins-ha-vmss"
+  name                = "jenkinshavmss"
   resource_group_name = azurerm_resource_group.jenkins-ha.name
   location            = azurerm_resource_group.jenkins-ha.location
 
