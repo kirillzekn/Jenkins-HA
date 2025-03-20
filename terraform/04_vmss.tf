@@ -43,14 +43,14 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
     name    = "jenkins-ha-nic"
     primary = true
 
-#IP configuration for loadbalancer
+    #IP configuration for loadbalancer
 
     ip_configuration {
-      name      = "internal"
-      primary   = true
-      subnet_id = azurerm_subnet.internal.id
+      name                                   = "internal"
+      primary                                = true
+      subnet_id                              = azurerm_subnet.internal.id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.jenkins-ha.id]
-      load_balancer_inbound_nat_rules_ids = [azurerm_lb_nat_rule.jenkins-ha.id, azurerm_lb_nat_rule.jenkins-ha-8080.id, azurerm_lb_nat_rule.jenkins-ha-50000.id]
+      load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_rule.jenkins-ha.id, azurerm_lb_nat_rule.jenkins-ha-8080.id, azurerm_lb_nat_rule.jenkins-ha-50000.id]
     }
   }
 }
