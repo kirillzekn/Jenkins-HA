@@ -18,7 +18,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
   resource_group_name = azurerm_resource_group.jenkins-ha.name
   location            = azurerm_resource_group.jenkins-ha.location
 
-  sku            = "Standard_B2s"
+  sku            = "Standard_B2ms"
   instances      = 2
   admin_username = "adminuser"
 
@@ -50,7 +50,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
       primary                                = true
       subnet_id                              = azurerm_subnet.internal.id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.jenkins-ha.id]
-      load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_rule.jenkins-ha.id] #, azurerm_lb_nat_rule.jenkins-ha-8080.id, azurerm_lb_nat_rule.jenkins-ha-50000.id]
+      load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_rule.jenkins-ha.id, azurerm_lb_nat_rule.jenkins-ha-8080.id, azurerm_lb_nat_rule.jenkins-ha-50000.id]
     }
   }
 }
