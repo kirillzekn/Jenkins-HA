@@ -68,7 +68,7 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = var.MY_IP
     destination_address_prefix = "*"
   }
 }

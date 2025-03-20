@@ -22,3 +22,8 @@ variable "AZURE_DEFAULT_REGION" {
   default     = "West Europe"
 
 }
+
+variable "MY_IP" {
+  type        = string
+  description = "The IP address to whitelist for the VMSS, LB cluster"
+}
