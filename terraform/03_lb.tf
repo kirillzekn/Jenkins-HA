@@ -26,9 +26,10 @@ resource "azurerm_lb_backend_address_pool" "jenkins-ha" {
 resource "azurerm_lb_nat_rule" "jenkins-ha" {
   name                           = "SSH_22"
   protocol                       = "Tcp"
-  frontend_port                  = 22
+  frontend_port_start            = 22
+  frontend_port_end              = 23
   backend_port                   = 22
-  frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
+  frontend_ip_configuration_name = "PublicIPAddress"
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
   backend_address_pool_id        = azurerm_lb_backend_address_pool.jenkins-ha.id
   idle_timeout_in_minutes        = 4
