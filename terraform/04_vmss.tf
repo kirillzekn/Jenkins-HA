@@ -56,7 +56,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
   depends_on = [azurerm_lb_backend_address_pool.jenkins-ha, azurerm_lb_rule.jenkins-ha-8080, azurerm_lb_nat_rule.jenkins-ha-22]
 }
 
-#network interface for VMSS
+
 
 
 resource "azurerm_network_security_group" "jenkins-ha-nsg" {
@@ -64,18 +64,29 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
   location            = azurerm_resource_group.jenkins-ha.location
   resource_group_name = azurerm_resource_group.jenkins-ha.name
 
-  # security_rule {
-  #   name                       = "SSH"
-  #   priority                   = 1001
-  #   direction                  = "Inbound"
-  #   access                     = "Allow"
-  #   protocol                   = "Tcp"
-  #   source_port_range          = "*"
-  #   destination_port_range     = "22"
-  #   source_address_prefix      = var.MY_IP
-  #   destination_address_prefix = "*"
-  # }
+  security_rule {
+    name                       = "AllowAnyConnectionForLB"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = azurerm_public_ip.jenkins-ha.ip_address
+    destination_address_prefix = "*"
+  }
 
+  security_rule {
+    name                       = "AllowAnyConnectionForMyIP"
+    priority                   = 1002
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = var.MY_IP
+    destination_address_prefix = "*"
+  }
 
 }
 
