@@ -23,7 +23,7 @@ resource "azurerm_lb_backend_address_pool" "jenkins-ha" {
 }
 
 #nat azure load balanceer rule
-resource "azurerm_lb_nat_rule" "jenkins-ha" {
+resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
   name                           = "SSH_22"
   protocol                       = "Tcp"
   frontend_port_start            = 22
