@@ -32,3 +32,10 @@ resource "azurerm_key_vault_secret" "jenkins-ha-ssh" {
   value        = tls_private_key.jenkins-ha.public_key_openssh
   key_vault_id = azurerm_key_vault.jenkins-ha.id
 }
+
+#Upload SSH private key to KeyVault
+resource "azurerm_key_vault_secret" "jenkins-ha-ssh-private" {
+  name         = "jenkins-ha-ssh-private"
+  value        = tls_private_key.jenkins-ha.private_key_pem
+  key_vault_id = azurerm_key_vault.jenkins-ha.id
+}
