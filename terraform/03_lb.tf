@@ -65,7 +65,7 @@ resource "azurerm_lb_rule" "jenkins-ha-80" {
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.jenkins-ha.id]
   idle_timeout_in_minutes        = 4
   enable_floating_ip             = false
-  
+
 }
 
 resource "azurerm_lb_rule" "jenkins-ha-22" {
@@ -78,7 +78,7 @@ resource "azurerm_lb_rule" "jenkins-ha-22" {
   backend_address_pool_ids       = [azurerm_lb_backend_address_pool.jenkins-ha.id]
   idle_timeout_in_minutes        = 4
   enable_floating_ip             = false
-  
+
 }
 
 
