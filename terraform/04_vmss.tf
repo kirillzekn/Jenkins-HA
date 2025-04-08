@@ -100,9 +100,9 @@ resource "azurerm_virtual_machine_scale_set_extension" "jenkins-ha" {
   type                         = "CustomScript"
   type_handler_version         = "2.0"
 
-  protected_settings = <<PROTECTED_SETTINGS
+  settings = <<SETTINGS
     {
-      "script": "{base64encode(file("scripts/vmss_script.sh"))}"
+      "script": "${filebase64("../scripts/vmss_script.sh")}"
     }
-  PROTECTED_SETTINGS
+  SETTINGS
 }
