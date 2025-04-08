@@ -19,7 +19,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
   location            = azurerm_resource_group.jenkins-ha.location
 
   sku            = "Standard_B2s"
-  instances      = 2
+  instances      = 1
   admin_username = "adminuser"
 
   admin_ssh_key {
@@ -53,7 +53,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
       #load_balancer_inbound_nat_rules_ids    = [azurerm_lb_nat_rule.jenkins-ha-22.id] #, azurerm_lb_nat_rule.jenkins-ha-8080.id, azurerm_lb_nat_rule.jenkins-ha-50000.id]
     }
   }
-  depends_on = [azurerm_lb_backend_address_pool.jenkins-ha, azurerm_lb_rule.jenkins-ha-8080] #, azurerm_lb_nat_rule.jenkins-ha-22]
+  depends_on = [azurerm_lb_backend_address_pool.jenkins-ha, azurerm_lb_rule.jenkins-ha-8080, azurerm_lb_rule.jenkins-ha-22] #, azurerm_lb_nat_rule.jenkins-ha-22]
 }
 
 resource "azurerm_network_security_group" "jenkins-ha-nsg" {
