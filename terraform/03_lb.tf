@@ -27,7 +27,7 @@ resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
   name                           = "SSH_22"
   protocol                       = "Tcp"
   frontend_port_start            = 22
-  frontend_port_end              = 23
+  frontend_port_end              = 22
   backend_port                   = 22
   frontend_ip_configuration_name = "PublicIPAddress"
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
@@ -37,40 +37,6 @@ resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
   resource_group_name            = azurerm_resource_group.jenkins-ha.name
 
 }
-
-
-# resource "azurerm_lb_nat_rule" "jenkins-ha" {
-#   name          = "SSH"
-#   protocol      = "Tcp"
-#   frontend_port = 22
-#   backend_port  = 22
-#   #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
-#   loadbalancer_id                = azurerm_lb.jenkins-ha.id
-#   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
-#   resource_group_name            = azurerm_resource_group.jenkins-ha.name
-# }
-
-# resource "azurerm_lb_nat_rule" "jenkins-ha-8080" {
-#   name          = "Jenkins"
-#   protocol      = "Tcp"
-#   frontend_port = 8080
-#   backend_port  = 8080
-#   #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
-#   loadbalancer_id                = azurerm_lb.jenkins-ha.id
-#   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
-#   resource_group_name            = azurerm_resource_group.jenkins-ha.name
-# }
-
-# resource "azurerm_lb_nat_rule" "jenkins-ha-50000" {
-#   name          = "Jenkins50000"
-#   protocol      = "Tcp"
-#   frontend_port = 50000
-#   backend_port  = 50000
-#   #frontend_ip_configuration_id   = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].id
-#   loadbalancer_id                = azurerm_lb.jenkins-ha.id
-#   frontend_ip_configuration_name = azurerm_lb.jenkins-ha.frontend_ip_configuration[0].name
-#   resource_group_name            = azurerm_resource_group.jenkins-ha.name
-# }
 
 resource "azurerm_lb_rule" "jenkins-ha-8080" {
   name                           = "HTTP_8080"
