@@ -27,7 +27,7 @@ resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
   name                           = "SSH_22"
   protocol                       = "Tcp"
   frontend_port_start            = 22
-  frontend_port_end              = 23
+  frontend_port_end              = 24
   backend_port                   = 22
   frontend_ip_configuration_name = "PublicIPAddress"
   loadbalancer_id                = azurerm_lb.jenkins-ha.id
