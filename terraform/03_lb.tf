@@ -22,21 +22,21 @@ resource "azurerm_lb_backend_address_pool" "jenkins-ha" {
   loadbalancer_id = azurerm_lb.jenkins-ha.id
 }
 
-#nat azure load balanceer rule
-resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
-  name                           = "SSH_22"
-  protocol                       = "Tcp"
-  frontend_port_start            = 22
-  frontend_port_end              = 23
-  backend_port                   = 22
-  frontend_ip_configuration_name = "PublicIPAddress"
-  loadbalancer_id                = azurerm_lb.jenkins-ha.id
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.jenkins-ha.id
-  idle_timeout_in_minutes        = 4
-  enable_floating_ip             = false
-  resource_group_name            = azurerm_resource_group.jenkins-ha.name
+# nat azure load balanceer rule
+# resource "azurerm_lb_nat_rule" "jenkins-ha-22" {
+#   name                           = "SSH_22"
+#   protocol                       = "Tcp"
+#   frontend_port_start            = 22
+#   frontend_port_end              = 23
+#   backend_port                   = 22
+#   frontend_ip_configuration_name = "PublicIPAddress"
+#   loadbalancer_id                = azurerm_lb.jenkins-ha.id
+#   backend_address_pool_id        = azurerm_lb_backend_address_pool.jenkins-ha.id
+#   idle_timeout_in_minutes        = 4
+#   enable_floating_ip             = false
+#   resource_group_name            = azurerm_resource_group.jenkins-ha.name
 
-}
+# }
 
 resource "azurerm_lb_rule" "jenkins-ha-8080" {
   name                           = "HTTP_8080"
