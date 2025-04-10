@@ -18,7 +18,8 @@ resource "azurerm_linux_virtual_machine_scale_set" "jenkins-ha" {
   resource_group_name = azurerm_resource_group.jenkins-ha.name
   location            = azurerm_resource_group.jenkins-ha.location
 
-  sku            = "Standard_B2s"
+  #sku            = "Standard_B2s"
+  sku            = "Standard_B1ms"
   instances      = 1
   admin_username = "adminuser"
 
