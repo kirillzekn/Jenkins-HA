@@ -67,7 +67,7 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
     priority                   = 1001
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "TCP"
     source_port_range          = "*"
     destination_port_range     = "*"
     source_address_prefix      = azurerm_public_ip.jenkins-ha.ip_address
@@ -79,7 +79,7 @@ resource "azurerm_network_security_group" "jenkins-ha-nsg" {
     priority                   = 1002
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "Tcp"
+    protocol                   = "TCP"
     source_port_range          = "*"
     destination_port_range     = "*"
     source_address_prefix      = var.MY_IP

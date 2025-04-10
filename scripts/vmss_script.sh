@@ -1,5 +1,5 @@
-apt update
-apt install cifs-utils
+apt update -y
+apt install cifs-utils -y
 
 #Mount Azure SMB File Share
 # mkdir -p /mnt/azure
@@ -7,6 +7,7 @@ apt install cifs-utils
 
 wget -O /usr/share/keyrings/jenkins-keyring.asc \
   https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
   https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
   /etc/apt/sources.list.d/jenkins.list > /dev/null
